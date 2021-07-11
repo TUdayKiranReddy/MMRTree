@@ -1,28 +1,8 @@
+#include <fstream>
 #include <iostream>
-#include <MMRTree.hpp>
+#include <vector>
+#include <bits/stdc++.h>
 
-class Node{
-public:
-	int _level;
-	long _hash;
-	Node() {
-        _level = -1;
-        _hash = 0;
-    }
-    Node(int level, const long& hash) {
-        _level = level;
-        _hash = hash;
-    }
-    Node& operator=(const Node& node) {
-        if(this == &node) {
-            return *this;
-        }
-
-        _level = node._level;
-        _hash = node._hash;
-        return *this;
-    }
-};
 
 class MMRTree{
 public:
@@ -238,14 +218,15 @@ public:
 		std::cout << std::endl;
 	}
 
-//private:
 	int height;
-	std::vector<Node> tree;
 	int _leafs;
+
+private:
+	std::vector<Node> tree;
 	std::vector<int> leafs_positions;
 	std::vector<Node> _peaks;
 	std::vector<int> peaks_positions;
-private:
+
 	long concat(long lhash, long rhash){
 		return lhash + rhash;
 	}
@@ -298,28 +279,3 @@ private:
 		//idx++;
 	}
 };
-
-int main(){
-	std::vector<long> hashes = {1, 2, 3, 4, 5, 6, 7};
-	MMRTree mmr;
-	std::vector<long> peaks;
-	mmr.constructTree(hashes, peaks);
-	mmr.printTree();
-	mmr.updateTree(8, peaks);
-	mmr.printTree();
-	mmr.updateTree(9, peaks);
-	mmr.printTree();
-	mmr.updateTree(10, peaks);
-	mmr.printTree();
-	mmr.updateTree(11, peaks);
-	mmr.printTree();
-	std::vector<std::pair<long, bool>> proof;
-	mmr.prove(5, proof);
-	bool isVerify = mmr.verify(5, proof);
-	if(isVerify)
-		std::cout << "MMR Inclusion Proof Succesfully Verfied!\n";
-	else
-		std::cout << "MMR Inclusion Proof Failed in Verification!!\n";
-
-
-}
